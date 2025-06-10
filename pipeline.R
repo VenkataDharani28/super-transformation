@@ -32,9 +32,9 @@ preprocess_data <- function(df) {
   }
   
   # Example custom features (uncomment and adjust as needed)
-  # df$age_of_home_at_loss <- add_age_of_home_at_loss(df$LOSS_DT, df$YEAR_BUILT)
-  # df$age_of_roof_at_loss <- add_age_of_roof_at_loss(df$LOSS_DT, df$ROOF_YEAR)
-  # df$deductible_num <- convert_ded_txt_to_number(df$DEDUCTIBLE, df$DWELLING_LIMIT)
+  df$age_of_home_at_loss <- add_age_of_home_at_loss(df$LOSS_DT, df$YEAR_BUILT)
+  df$age_of_roof_at_loss <- add_age_of_roof_at_loss(df$LOSS_DT, df$ROOF_YEAR)
+  df$deductible_num <- convert_ded_txt_to_number(df$DEDUCTIBLE, df$DWELLING_LIMIT)
   
   return(df)
 }
