@@ -1,0 +1,18 @@
+These lines are examples of how to create new columns (features) in your data frame using the custom functions defined in your vector_ops.R file. They are commented out, so they won’t run unless you remove the # at the start of each line.
+
+Explanation:
+
+df$age_of_home_at_loss <- add_age_of_home_at_loss(df$LOSS_DT, df$YEAR_BUILT)
+
+This creates a new column age_of_home_at_loss in your data frame.
+It calculates the age of the home at the time of loss using the loss date (LOSS_DT) and the year the house was built (YEAR_BUILT).
+df$age_of_roof_at_loss <- add_age_of_roof_at_loss(df$LOSS_DT, df$ROOF_YEAR)
+
+This creates a new column age_of_roof_at_loss.
+It calculates the age of the roof at the time of loss using the loss date and the year the roof was installed.
+df$deductible_num <- convert_ded_txt_to_number(df$DEDUCTIBLE, df$DWELLING_LIMIT)
+
+This creates a new column deductible_num.
+It converts the deductible (which might be a percentage or text) into a numeric value, possibly using the dwelling limit for the calculation.
+In summary:
+These lines show how to use your custom feature engineering functions to add new, useful columns to your data frame for further analysis or modeling. Uncomment and adjust them to fit your actual column names and data.
