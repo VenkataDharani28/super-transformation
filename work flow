@@ -19,3 +19,14 @@ There is no call to any data cleaning or preprocessing function (such as those i
 The splitting is done on the raw data as read from the parquet file.
 Summary:
 Splitting happens before any explicit data cleaning or preprocessing. If you want to clean or preprocess the data before splitting, you would need to add those steps before the split() call in split_parquet_data.
+
+#####################################################
+The code you provided is related to scoring, not preprocessing.
+
+Explanation:
+
+The functions generate_features and generate_predictions are designed to take a trained model workflow and new data, then generate features (using the model's recipe) and predictions (using the model).
+These are typical steps in a scoring pipeline, where you apply a trained model to new/unseen data to get predictions.
+Preprocessing usually refers to cleaning, transforming, or engineering features from raw data before model training or scoring. While generate_features does apply the recipe (which may include preprocessing steps), in this context it is being used as part of the scoring process.
+Summary:
+This code is for scoring (applying a trained model to new data), not for initial data preprocessing.
