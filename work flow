@@ -1,0 +1,10 @@
+The purpose of this function is to load a trained (fitted) workflow/model object from disk into your R environment so it can be used for making predictions or further analysis.
+
+What it does:
+Checks that the provided file path (workflow_fp) exists and is a character string.
+Reads the workflow object from the file using readRDS().
+Extracts the fitted workflow (fitted_wf) from the loaded object.
+Verifies that the extracted object is a trained workflow using workflows::is_trained_workflow.
+Returns the trained workflow object for use elsewhere in your code.
+Why use it?
+This function is typically used in a prediction or scoring pipeline to reload a previously trained model so you can apply it to new data.
