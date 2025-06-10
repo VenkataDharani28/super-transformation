@@ -8,3 +8,14 @@ Verifies that the extracted object is a trained workflow using workflows::is_tra
 Returns the trained workflow object for use elsewhere in your code.
 Why use it?
 This function is typically used in a prediction or scoring pipeline to reload a previously trained model so you can apply it to new data.
+
+####################################################
+Based on the provided files, data is being split after reading/parsing from parquet, but before any explicit data cleaning or preprocessing steps.
+
+Here’s why:
+
+In split_parquet_data (in io.R), the function reads the data from a parquet file and splits it into multiple data frames based on a column (default: "SCORING_MODEL_NAME"), then writes each split to a new parquet file.
+There is no call to any data cleaning or preprocessing function (such as those in vector_ops.R) before or after the split in this function.
+The splitting is done on the raw data as read from the parquet file.
+Summary:
+Splitting happens before any explicit data cleaning or preprocessing. If you want to clean or preprocess the data before splitting, you would need to add those steps before the split() call in split_parquet_data.
