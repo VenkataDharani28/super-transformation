@@ -55,3 +55,44 @@ processed_data <- preprocess_super_subro(raw_data)
 
 ######################################################################################
 
+#' Read, preprocess, and split Super Subro model data
+#'
+#' @param input_fp Path to input parquet file
+#' @param output_dir Directory where output parquet files will be saved
+#' @param split_col Column to split the data on (default: "SCORING_MODEL_NAME")
+#' @param split Logical flag to split data after preprocessing (default: TRUE)
+#'
+#' @return Preprocessed data.frame (invisibly if split is TRUE)
+#' @export
+process_and_split_super_subro_data <- function(input_fp,
+                                               output_dir = NULL,
+                                               split_col = "SCORING_MODEL_NAME",
+                                               split = TRUE) {
+  # Read parquet
+  raw_df <- read_data_from_parquet(input_fp)
+
+  # Apply preprocessing
+  prepped_df <- preprocess_super_subro(raw_df)
+
+  # Optionally split and save
+  if (isTRUE(split)) {
+    stopifnot(!is.null(output_dir))
+    # Write preprocessed data temporarily before splitting
+    temp_fp <- file.path(output_dir, "super_subro_prepped.parquet")
+    write_data_to_parquet(prepped_df, temp_fp)
+
+    # Now split the prepped data
+    split_parquet_data(temp_fp, output_dir, split_col = split_col)
+
+    return(invisible(prepped_df))
+  }
+
+  # Otherwise, return just the preprocessed data
+  return(prepped_df)
+}
+
+
+########################################################################################################
+
+
+
