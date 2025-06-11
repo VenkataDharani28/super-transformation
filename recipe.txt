@@ -1,0 +1,56 @@
+ they are well-defined and cover character cleaning, indicator creation, date/numeric conversion, and domain-specific logic like calculating the age of a home at loss. Now you’re asking:
+
+❓How are these preprocessing functions applied in a recipe?
+The recipes package allows you to apply preprocessing in a modular, trackable, and reusable way as part of a machine learning workflow. Your functions would be used inside custom recipe steps, or called within a step_mutate() via step_mutate_at(), step_mutate() or within step_custom() (if you define your own steps).
+
+✅ Here's How You Can Use Your Functions in a Recipe
+👇 Example with step_mutate() and step_mutate_at():
+r
+Copy
+Edit
+library(recipes)
+library(dplyr)
+library(lubridate)
+
+# Sample dataset
+data <- tibble(
+  loss_date = as.Date(c("2020-01-01", "2021-06-01")),
+  year_built = c(1990, 0),
+  roof_install_date = as.Date(c("2010-01-01", "2022-01-01")),
+  indicator_col = c("Y", "N"),
+  char_field = c("   ", "Value"),
+  num_field = c("1000", "2000")
+)
+
+# Define recipe
+rec <- recipe(~ ., data = data) %>%
+  step_mutate(
+    loss_date = prepare_date_fields(loss_date),
+    year_built = prepare_numeric_fields(year_built),
+    roof_install_date = prepare_date_fields(roof_install_date),
+    indicator_col = prepare_indicator_fields(indicator_col),
+    char_field = prepare_character_fields(char_field),
+    num_field = prepare_numeric_fields(num_field)
+  ) %>%
+  step_mutate(
+    age_of_home_at_loss = add_age_of_home_at_loss(loss_date, year_built),
+    age_of_roof_at_loss = add_age_of_roof_at_loss(loss_date, roof_install_date)
+  )
+
+# Prep and bake
+rec_prep <- prep(rec)
+cleaned_data <- bake(rec_prep, new_data = NULL)
+print(cleaned_data)
+⚠️ Notes:
+Your functions are not native recipes steps, so you use them inside step_mutate() or define a custom step using step_custom() (if you want to integrate deeply into the tidymodels ecosystem).
+
+step_mutate() is flexible and allows transformations directly using custom functions.
+
+🧠 Summary
+Your functions like prepare_character_fields() or add_age_of_home_at_loss() can be used inside a recipe using step_mutate() or similar.
+
+This way, the recipe keeps track of how data was transformed.
+
+When included in a workflow, this recipe is saved as part of the fitted_wf, and automatically reapplied to new data during prediction.
+
+Would you like help defining a custom step function (e.g. step_prepare_character_fields()) so it integrates more tightly into tidymodels?
